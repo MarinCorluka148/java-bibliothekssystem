@@ -141,4 +141,8 @@ public class Bibliothek {
         }
     }
 
+    public int anzahlMedien() {
+        return medien.size();
+    }
+
 }
