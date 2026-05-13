@@ -7,24 +7,22 @@ public final class Main {
 
     public static void main(String[] args) {
 
+        try {
+
+            Datenbank.verbinden();
+            Datenbank.tabelleErstellen();
+
+            System.out.println("Datenbank verbunden!");
+
+        } catch (Exception e) {
+
+            System.out.println("Fehler bei der Verbindung.");
+        }
+
         Bibliothek bibliothek = new Bibliothek();
+        bibliothek.setMedien(Datenbank.medienLaden());
         Scanner scanner = new Scanner(System.in);
 
-        // Testdaten
-        bibliothek.mediumHinzufuegen(
-                new Buch("Der Hobbit", 1937, false,
-                        "J.R.R. Tolkien", 310)
-        );
-
-        bibliothek.mediumHinzufuegen(
-                new Film("Inception", 2010, false,
-                        148.0, 12)
-        );
-
-        bibliothek.mediumHinzufuegen(
-                new Spiel("Minecraft", 2011, false,
-                        "PC", true)
-        );
 
         boolean laeuft = true;
 
@@ -43,6 +41,7 @@ public final class Main {
             System.out.println("9 - Neues Medium hinzufügen");
             System.out.println("10 - Bibliothek speichern");
             System.out.println("11 - Bibliothek laden");
+            System.out.println("12 - Datenbank anzeigen");
             System.out.print("Auswahl: ");
 
 
@@ -79,6 +78,8 @@ public final class Main {
                     String ausleihTitel = scanner.nextLine();
 
                     bibliothek.mediumAusleihen(ausleihTitel);
+                    Datenbank.ausleihStatusAktualisieren(ausleihTitel, true);
+
                     break;
 
 
@@ -88,6 +89,7 @@ public final class Main {
                     String rueckgabeTitel = scanner.nextLine();
 
                     bibliothek.mediumZurueckgeben(rueckgabeTitel);
+                    Datenbank.ausleihStatusAktualisieren(rueckgabeTitel, false);
                     break;
 
 
@@ -97,6 +99,8 @@ public final class Main {
                     String entfernTitel = scanner.nextLine();
 
                     bibliothek.mediumEntfernen(entfernTitel);
+                    Datenbank.mediumLoeschen(entfernTitel);
+
                     break;
 
 
@@ -199,6 +203,7 @@ public final class Main {
                             );
 
                             bibliothek.mediumHinzufuegen(buch);
+                            Datenbank.mediumSpeichern(buch);
 
                             System.out.println("Buch hinzugefügt.");
 
@@ -265,6 +270,7 @@ public final class Main {
                             );
 
                             bibliothek.mediumHinzufuegen(film);
+                            Datenbank.mediumSpeichern(film);
 
                             System.out.println("Film hinzugefügt.");
 
@@ -319,6 +325,7 @@ public final class Main {
                             );
 
                             bibliothek.mediumHinzufuegen(spiel);
+                            Datenbank.mediumSpeichern(spiel);
 
                             System.out.println("Spiel hinzugefügt.");
 
@@ -338,6 +345,10 @@ public final class Main {
 
                 case 11:
                     bibliothek.laden("bibliothek.dat");
+                    break;
+
+                case 12:
+                    Datenbank.alleMedienAusgeben();
                     break;
 
                 default:

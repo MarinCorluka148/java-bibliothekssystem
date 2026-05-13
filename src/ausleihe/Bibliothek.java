@@ -17,6 +17,10 @@ public class Bibliothek {
         medien = new ArrayList<>();
     }
 
+    public void setMedien(ArrayList<Medium> medien) {
+        this.medien = medien;
+    }
+
     public void mediumHinzufuegen(Medium medium) {
         medien.add(medium);
     }
